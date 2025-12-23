@@ -9,7 +9,7 @@ const fetchMovie = async (movie) => {
   try {
     showLoading();
     const response = await fetch(
-      `https://www.omdbapi.com/?t=${movie}&apikey=${API_KEY}`
+      `https://www.omdbapi.com/?t=${encodeURIComponent(movie)}&apikey=${API_KEY}`
     );
 
     if (!response.ok) {
