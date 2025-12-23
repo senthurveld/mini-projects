@@ -8,4 +8,4 @@
 # <a href = "https://senthurveld.github.io/mini-projects/to-do app/index.html" target ="_blank ">To-Do list</a>
 # <a href = "https://senthurveld.github.io/mini-projects/Weather%20App/index.html" target ="_blank ">Weather App</a>
 
-<p>A special thanks for <a href = "https://github.com/tapascript" >@tapaScript </a>for making and giving so premium contents as FREEMIUM!</p>
+<p>A special thanks for <a href = "https://github.com/tapascript" target ="_blank">@tapaScript </a>for making and giving so premium contents as FREEMIUM!</p>
