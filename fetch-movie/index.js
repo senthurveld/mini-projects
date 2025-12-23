@@ -9,18 +9,23 @@ const fetchMovie = async (movie) => {
   try {
     showLoading();
     const response = await fetch(
-      `https://www.omdbapi.com/?t=${encodeURIComponent(movie)}&apikey=${API_KEY}`
+      `https://www.omdbapi.com/?t=${encodeURIComponent(
+        movie
+      )}&apikey=${API_KEY}`
     );
 
     if (!response.ok) {
-      throw new Error("Not Found on database");
+      throw new Error("Error occuried!");
     } else {
       console.log("good");
     }
 
     const data = await response.json();
-    showResult(data);
-    console.log(data);
+    if (data.Title === undefined || !data ) {
+      throw new Error("Movie not found")
+    }else {
+      showResult(data);
+    }
   } catch (error) {
     showError(error.message);
   } finally {
@@ -53,7 +58,7 @@ function showResult(data) {
         <img src="${data.Poster}" alt="${data.Title} Poster" height="250px" width:"250px">
     </div>
         <div class="movie-data">
-        <h1>${data.Title}</h1>
+        <h1 id="title"> <a href="https://www.imdb.com/title/${data.imdbID}" target="_blank"> ${data.Title} </a></h1>
         <p>Year: ${data.Year}</p>
         <p>Language: ${data.Language}</p>
         <p>Director: ${data.Director}</p>
@@ -63,13 +68,11 @@ function showResult(data) {
     </div>
 
     `;
-  console.log(data.Title);
-
   document.querySelector("#movieDetails").innerHTML = html;
 }
 
 function showError(message) {
   document.querySelector(
     "#movieDetails"
-  ).innerHTML = `<p style="color:red;">❌ ${message}</p>`;
+  ).innerHTML = `<p id = "error">❌ ${message}</p>`;
 }
