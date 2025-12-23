@@ -9,7 +9,7 @@ const getWeather = async (city) => {
     );
 
     if (!result.ok) {
-      throw new Error("Error occuried in connection!");
+      throw new Error("Invaild city. Try again!");
     }
 
     const data = await result.json();
