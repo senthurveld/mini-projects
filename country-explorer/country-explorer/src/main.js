@@ -5,17 +5,22 @@ const error = document.querySelector("#error");
 const searchBtn = document.getElementById("searchBtn");
 const searchInput = document.getElementById("searchInput");
 const countryDetails = document.getElementById("countryDetails");
+const mapArea = document.getElementById("map");
+let map;
 
-searchBtn.addEventListener("click" , () => {
+searchBtn.addEventListener("click",async () => {
   const country = searchInput.value.trim();
+
   if (!country) return;
 
-  fetchCountry(country);
+  await fetchCountry(country);
 });
 
 async function fetchCountry(name) {
+
   error.classList.add("hidden");
   loader.classList.remove("hidden");
+
   countryDetails.innerHTML = "";
 
   try {
@@ -30,8 +35,9 @@ async function fetchCountry(name) {
       throw new Error("Invaild Country Name");
     }
 
-    const language = country.languages ? Object.values(country.languages).join(", ") 
-                                        : "N/A" 
+    const language = country.languages
+      ? Object.values(country.languages).join(", ")
+      : "N/A";
 
     countryDetails.innerHTML = `
         <div class="p-4 border rounded shadow">
@@ -44,6 +50,10 @@ async function fetchCountry(name) {
             <p><strong>Timezone : </strong>${country.timezones}</p>
         </div>
     `;
+
+    console.log(country.latlng);
+    drawMap(country.latlng, country.name.common);
+    
     // console.log(data[0]?.name?.common);
   } catch (err) {
     error.classList.remove("hidden");
@@ -52,3 +62,29 @@ async function fetchCountry(name) {
     loader.classList.add("hidden");
   }
 }
+
+let marker;
+
+function drawMap(latlang, name) {
+  const [lat, lng] = latlang;
+
+  if (!map) {
+    map = L.map("map").setView([lat, lng], 5);
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap contributors",
+    }).addTo(map);
+  } else {
+    map.setView([lat, lng], 5);
+  }
+
+  // remove old marker (optional but recommended)
+  if (marker) {
+    map.removeLayer(marker);
+  }
+
+  // add marker properly
+  marker = L.marker([lat, lng]).addTo(map).bindPopup(name).openPopup();
+}
+
+
